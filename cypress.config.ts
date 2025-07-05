@@ -19,7 +19,7 @@ export default defineConfig({
         },
       },
     },
-    specPattern: '../**/*.cy.ts',
+    specPattern: 'cypress/component/**/*.cy.ts',
     supportFile: 'cypress/support/component.ts',
     indexHtmlFile: 'cypress/support/component-index.html',
   },
