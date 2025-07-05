@@ -19,7 +19,7 @@
 import './commands'
 
 import { mount } from 'cypress/vue'
-import router from '@/router'
+import router from '../../src/router/index.js'
 import { createPinia } from 'pinia'
 
 const pinia = createPinia()
