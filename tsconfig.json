@@ -9,8 +9,18 @@
     },
     {
       "path": "./tsconfig.vitest.json"
+    },
+    {
+      "path": "./tsconfig.cypress.json"
     }
   ],
+  "moduleResolution": "bundler",
+  "module": "ESNext",
+  "paths": {
+    "@/*": [
+      "./src/*"
+    ]
+  },
   "compilerOptions": {
     "module": "NodeNext"
   }
