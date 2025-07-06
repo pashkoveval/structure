@@ -1,6 +1,27 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
+import axios from 'axios';
+
+const fetchUsers = async () => {
+  const response = await fetch('/api/users');
+  const data = await response.json();
+  console.log(data);
+};
+
+const axiosInstance = axios.create({ baseURL: '/' });
+
+const getS = async () => {
+  try {
+    const res = await axiosInstance.get('/api/users');
+    return res;
+  } catch (error) {
+    return error;
+  }
+};
+
+console.log('getS', getS());
+console.log('fetchUsers', fetchUsers());
 </script>
 
 <template>
