@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
+import { useAuthStore } from './supabase/auth';
+import { onMounted } from 'vue';
+import { useHandbooksStore } from './stores/handbooks';
+
+const AUTH = useAuthStore();
+const HANDBOOKS = useHandbooksStore();
+
+onMounted(async () => {
+  await AUTH.signIn();
+  await HANDBOOKS.getBaseHandbooks();
+  console.log('AUTH', AUTH.sessionData);
+  console.log('HANDBOOKS', HANDBOOKS.handbooksList);
+});
 </script>
 
 <template>

@@ -1,10 +1,10 @@
-<script setup lang='ts'>
-defineOptions({ name: 'RoleItem'});
+<script setup lang="ts">
+defineOptions({ name: 'RoleItem' });
 // const props = defineProps({});
 </script>
 
 <template>
-<div class='role-item'></div>
+  <div class="role-item"></div>
 </template>
 
-<style scoped lang='scss'></style>
+<style scoped lang="scss"></style>

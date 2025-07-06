@@ -9,6 +9,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import isEqual from 'lodash/isEqual';
 import supabase from '@/supabase';
+import { UsersDB } from '../UsersDB.mock';
 
 type CurrentSession = {
   access_token: string;
@@ -19,7 +20,10 @@ export type AuthUser = User;
 export type SessionData = Session;
 export type AuthErrorData = Partial<AuthError & PostgrestError>;
 
-export const useAuthStore = defineStore('auth', () => {
+export const useAuthStore = defineStore('AUTH', () => {
+  const currentSession = ref<CurrentSession | null>(
+    JSON.parse(localStorage.getItem('structure.currentSession') || 'null'),
+  );
   const sessionData = ref<SessionData | null>(null);
   const authError = ref<AuthErrorData[]>([]);
 
@@ -30,7 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
   };
   const _setCurrentSession = (session: Session | null | undefined) => {
     if (session) {
-      const key = 'ppe.currentSession';
+      const key = 'structure.currentSession';
       const data: CurrentSession = {
         access_token: session.access_token,
         refresh_token: session.refresh_token,
@@ -47,11 +51,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setSessionData = async () => {
     const _setOrGetSession = async () => {
-      const currentSession: CurrentSession | null = JSON.parse(
-        localStorage.getItem('ppe.currentSession') || 'null',
-      );
-      if (currentSession) {
-        return await supabase.auth.setSession(currentSession);
+      if (currentSession.value) {
+        return await supabase.auth.setSession(currentSession.value);
       }
       return await supabase.auth.getSession();
     };
@@ -64,14 +65,9 @@ export const useAuthStore = defineStore('auth', () => {
     );
   };
 
-  const signIn = async (
-    credentials: SignInWithPasswordCredentials = {
-      email: 'super_admin@test.com',
-      password: 'super_admin',
-    },
-  ) => {
-    if (sessionData.value) {
-      return;
+  const signIn = async (credentials: SignInWithPasswordCredentials = UsersDB.SUPER_USER) => {
+    if (currentSession.value) {
+      return await setSessionData();
     }
 
     const {
